@@ -1,0 +1,95 @@
+(defwidget clock []
+    (box :orientation "v" :class "clock" :spacing 3 :space-evenly false
+        (box :orientation "v" :class "time" time)
+        (box :orientation "v" :class "date" "${year}년 ${month} ${date}일 (${day})")
+    )
+)
+
+(defwidget weather []
+    (box :class "weather" :space-evenly false :orientation "h" :halign "center"
+        (image :image-width 50 :image-height 50
+               :path { weathericon != "" ? "${EWW_CONFIG_DIR}/images/weather/${weathericon}d.png" : "${EWW_CONFIG_DIR}/images/loading.png"}
+        )
+        (label :text "${weatherdesc} ${weathertemp}°C")
+        (button :class "weather-refresh" :onclick "~/.config/eww/scripts/weather update &" "")
+    )
+)
+
+(defwidget music []
+    (box :class "music" :style "background-image: url('${songimage}');" :height 150
+        (box :class "music-container" :orientation "v" :space-evenly false
+            (box :class "music-info" :orientation "v" :halign "start"
+                (label :text "${songtitle}" :limit-width 16 :halign "start" :class "music-title")
+                (box :space-evenly false :halign "center" :spacing 30 :class "music-details"
+                    (label :text "${songartist}" :limit-width 12)
+                    (label :text "${songalbum}" :limit-width 12)
+                )
+            )
+            (box :class "music-ctr" :space-evenly false :spacing 50 :halign "center"
+                (button :onclick "playerctl previous" "玲")
+                (button :onclick "playerctl play-pause" "${songicon}")
+                (button :onclick "playerctl next" "怜")
+            )
+        )
+    )
+)
+
+(defwidget cal []
+    (box :class "cal-container" :orientation "v" :space-evenly false
+        (calendar :class "cal" :day date)
+    )
+)
+
+(defwidget timer []
+    (box :class "timer" :vexpand true :space-evenly false
+        (box :orientation "v" :class "timer-actions" :width 80
+            (button
+                :onclick {timercounting ? "~/.config/eww/scripts/timer pause" : "~/.config/eww/scripts/timer start"}
+                {timercounting ? "" : ""}
+            )
+            (button :class {timercounting ? "timer-disable" : ""} :onclick {timercounting ? "" : "~/.config/eww/scripts/timer reset"} "")
+        )
+        (box :class "timer-timebox" :hexpand "true" :halign "center" :space-evenly false :spacing 30
+            (box :orientation "v"  :valign "center" :space-evenly false :spacing 10
+                (button :onclick "~/.config/eww/scripts/timer hour-up" :visible {!timercounting} "")
+                (label :text "${timerhour}")
+                (button :onclick "~/.config/eww/scripts/timer hour-down" :visible {!timercounting} "")
+            )
+            ":"
+            (box  :orientation "v" :valign "center" :space-evenly false :spacing 10
+                (button :onclick "~/.config/eww/scripts/timer minute-up" :visible {!timercounting} "")
+                (label :text "${timerminute}")
+                (button :onclick "~/.config/eww/scripts/timer minute-down" :visible {!timercounting} "")
+            )
+            ":"
+            (box :orientation "v" :valign "center" :space-evenly false :spacing 10
+                (button :onclick "~/.config/eww/scripts/timer second-up" :visible {!timercounting} "")
+                (label :text "${timersecond}")
+                (button :onclick "~/.config/eww/scripts/timer second-down" :visible {!timercounting} "")
+            )
+        )
+    )
+)
+
+(defwidget sidebar []
+    (box :orientation "v" :space-evenly false :spacing 22 :class "sidebar-container"
+        (clock)
+        (weather)
+        (cal)
+        (timer)
+        (music)
+    )
+)
+
+(defwindow sidebar
+    :monitor 0
+    :windowtype "dock"
+    :geometry (geometry :x 0
+                        :y "53px"
+                        :width "400px"
+                        :height "1027px" ; 1080 - 53 
+                        :anchor "top left")
+    :wm-ignore true
+    :stacking "fg"
+    (sidebar)
+)

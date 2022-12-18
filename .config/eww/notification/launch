@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ -z $(eww windows | grep background-closer | grep '*' 2>/dev/null) ]; then
+    eww open background-closer
+else
+    if [[ -z $(eww windows | grep sidebar | grep '*' 2>/dev/null) ]]; then
+        eww close background-closer
+    fi
+fi
+
+eww open --toggle notification
+
+eww update gmail=$(~/.config/eww/scripts/mail gmail) &
+eww update navermail=$(~/.config/eww/scripts/mail navermail) &

@@ -1,0 +1,55 @@
+#! /bin/sh
+
+rm ~/.cache/bspwm/*
+killall makeFloat
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+picom &
+feh --bg-fill ~/.config/bspwm/wallpapers/milky-way.jpg
+dunst &
+xfce4-power-manager &
+megasync &
+caffeine &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+blueman-applet &
+killall eww; eww daemon --restart
+
+LC_ALL=C ~/.config/conky/Auva/start.sh
+
+bspc monitor -d I II III IV V VI VII VIII IX X
+
+bspc config border_width         0
+bspc config window_gap          10
+bspc config border_radius       15
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off
+bspc rule -a "MEGAsync" state=floating follow=on
+bspc rule -a "kakaotalk.exe" state=floating
+
+
+killall polybar; ~/.config/polybar/launch.sh &
+killall tint2; tint2 & # for tray
+alttab -w 1 -fg "#c0caf5" -bg "#24283b" -frame "#eb564d" -t 400x140 -i 400x40 &
+
+pkill -f ~/.config/eww/daemon; ~/.config/eww/daemon &
+
+# Hangul key
+xmodmap -e 'remove mod1 = Alt_R'
+xmodmap -e 'keycode 108 = Hangul'
+xmodmap -e 'remove control = Control_R'
+xmodmap -e 'keycode 105 = Hangul_Hanja'
+
+# lock
+xset s on
+xset s 300
+xss-lock ~/.config/bspwm/scripts/lock &
+xautolock -time 10 -locker "systemctl suspend" &
+
+# tint2 fullscreen issue
+xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" $(xdo id -n tint2)

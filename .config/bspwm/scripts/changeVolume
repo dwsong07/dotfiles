@@ -1,0 +1,35 @@
+#!/bin/bash
+# changeVolume
+
+# Arbitrary but unique message tag
+msgTag="myvolume"
+
+# Active sink
+#SINK=$(LC_ALL=C pactl list sinks | grep RUNNING -B 1 | grep -Eo '[0-9]{1,}')
+SINK=$(pactl get-default-sink)
+
+if [[ "$1" == "toggle" ]]; then
+    # Toggle mute
+    pactl set-sink-mute $SINK toggle
+else
+    # Change the volume using pulseaudio
+    pactl set-sink-volume $SINK "$1"
+fi
+
+# Query amixer for the current volume and whether or not the speaker is muted
+volume="$(awk -F"[][]" '/Left:/ { print $2 }' <(amixer sget Master))"
+mute="$(amixer sget Master | tail -1 | awk '{print $6}' | sed 's/[^a-z]*//g')"
+
+if [[ $((${volume::-1})) -gt 100 ]]; then
+	pactl set-sink-volume $SINK 100%
+	volume="100%"
+fi
+
+if [[ $volume == 0 || "$mute" == "off" ]]; then
+    # Show the sound muted notification
+    dunstify -a "changeVolume" -u low -i audio-volume-muted -h string:x-dunst-stack-tag:$msgTag "Volume muted" 
+else
+    # Show the volume notification
+    dunstify -a "changeVolume" -u low -i audio-volume-high -h string:x-dunst-stack-tag:$msgTag \
+    -h int:value:"$volume" "Volume: ${volume}"
+fi

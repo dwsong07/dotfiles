@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>이 위치에서 터미널 열기</name>
+	<unique-id>1665295934199121-1</unique-id>
+	<command>kitty %f</command>
+	<description>사용자 정의 동작 에제</description>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>preferences-system-search</icon>
+	<name>파일 검색</name>
+	<unique-id>1666459147593736-1</unique-id>
+	<command>catfish --path=%f</command>
+	<description></description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+</actions>

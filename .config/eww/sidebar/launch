@@ -1,0 +1,24 @@
+#!/bin/bash
+
+DIR=~/.cache/eww/timer
+
+if [[ $DEV != true ]]; then
+    if [[ -z $(eww windows | grep background-closer | grep '*' 2>/dev/null) ]]; then
+        eww open background-closer
+    else
+        if [[ -z $(eww windows | grep notification | grep '*' 2>/dev/null) ]]; then
+            eww close background-closer
+        fi
+    fi
+fi
+
+eww open --toggle sidebar
+
+if [ -f $DIR/countdown_pid ]; then
+    eww update timercounting=true &
+    eww update HOUR=$(cat $DIR/hour) MINUTE=$(cat $DIR/minute) SECOND=$(cat $DIR/second) &
+fi
+
+eww update weatherdesc=$(~/.config/eww/scripts/weather desc) &
+eww update weathertemp=$(~/.config/eww/scripts/weather temp) &
+eww update weathericon=$(~/.config/eww/scripts/weather icon) &

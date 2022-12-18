@@ -1,0 +1,36 @@
+#!/bin/bash
+
+mkdir -p ~/.cache/eww/timer
+
+TOTAL_SECONDS=$1
+DIR=~/.cache/eww/timer
+
+function setTime {
+    echo $1 > $DIR/$2
+    eww update "timer$2=$(printf '%02d' $1)"
+}
+
+if [[ $TOTAL_SECONDS < 1 ]]; then
+    exit
+fi
+
+eww update timercounting=true
+
+while [ $TOTAL_SECONDS -gt 0 ]; do
+    sleep 1 &
+    echo $TOTAL_SECONDS > $DIR/countdown
+    TOTAL_SECONDS=$(( TOTAL_SECONDS - 1 ))
+    HOUR=$(( TOTAL_SECONDS / 3600 ))
+    MINUTE=$(( TOTAL_SECONDS % 3600 / 60 ))
+    SECOND=$(( TOTAL_SECONDS % 3600 % 60 ))
+
+    setTime $HOUR hour
+    setTime $MINUTE minute
+    setTime $SECOND second
+
+    wait
+done
+
+eww update timercounting=false
+notify-send -i alarm-timer -t 0 "Timer has finished!"
+rm $DIR/countdown_pid

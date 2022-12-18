@@ -1,0 +1,3 @@
+.config/env
+.config/eww/scripts/mail_address.py
+__pycache__

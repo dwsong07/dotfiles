@@ -1,0 +1,16 @@
+@search,,8,3,150,35,2,left,top,auto,#000000 0,  Type to Search
+Terminal, kitty, terminal
+Browser, firefox, browser
+File manager, thunar, xfce-filemanager
+^sep()
+Applications, ^checkout(apps), applications-all
+Bspwm, ^checkout(bspwm), preferences-system-windows
+Powermenu, ~/.config/rofi/scripts/powermenu_t1, system-devices-panel
+
+^tag(bspwm)
+Config file, kitty vim ~/.config/bspwm/bspwmrc, notes-panel
+Keybinds file, kitty vim ~/.config/sxhkd/sxhkdrc, keyboard
+Polybar config, kitty vim ~/.config/polybar/config.ini, configure
+Restart, bspc wm -r, system-restart-panel
+
+^tag(apps)

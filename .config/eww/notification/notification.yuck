@@ -1,0 +1,109 @@
+(defwidget action-btn [active onclick active-icon inactive-icon ?class]
+    (button :class "actions-btn ${active ? 'actions-btn-active' : ''} ${class}" :onclick "${onclick}"
+            {active ? "${active-icon}" : "${inactive-icon}"}
+    )
+)
+
+(defwidget actions []
+    (box :class "actions-box" :spacing 20 :height 70
+        (action-btn :active {wifiactive == 'connected'}
+                    :onclick "~/.config/rofi/scripts/wifi_menu &"
+                    :active-icon "直" :inactive-icon "睊"
+        )
+        (action-btn :active {bluetoothactive != 0} :class "actions-bluetooth"
+                    :onclick {bluetoothactive == 0 ? "rfkill unblock bluetooth" : "rfkill block bluetooth"}
+                    :active-icon "" :inactive-icon ""
+        )
+        (action-btn :active {nightmodeactive == 0}
+                    :onclick {nightmodeactive != 0 ? "redshift &" : "pkill redshift"}
+                    :active-icon "" :inactive-icon ""
+        )
+        (action-btn :active notificationdnd :class "actions-dnd"
+                    :onclick "dunstctl set-paused toggle"
+                    :active-icon "ﮖ" :inactive-icon "ﮗ"
+        )
+    )
+)
+
+(defwidget notification []
+    (box :class "notification-box" :orientation "v" :space-evenly false :spacing 20 :vexpand true
+        (box :class "notification-header" :space-evenly "false"
+            (label :text "Notifications" :hexpand true :halign "start")
+            (button :class "notification-clear" :halign "end" :onclick "~/.config/eww/scripts/logger clear" "Clear")
+        )
+        (literal :content notificationslog :class "notification-literal" :vexpand true)
+    )
+)
+
+(defwidget notification-card [?class summary body image ?SL ?M ?L ?R application]
+    (eventbox :onmiddleclick M
+              :onclick L
+              :onrightclick R
+              :class "notification-card-eventbox"
+        (box :space-evenly false :orientation "v"
+            (box :space-evenly "true" :orientation "h" :class "notification-card-header-box"
+                (label :class "notification-app-name" :text "${application}" :halign "start")
+                (button :onclick "~/.config/eww/scripts/logger rm_id ${SL}" :class "notification-card-notify-close" :halign "end" :width 18 :height 18
+                    ""
+                )
+            )
+            (box :space-evenly "false" :orientation "h" :class "notification-card-box" :spacing 10
+                (box :class "notification-image" :style "background-image: url(\"${image}\");")
+                (box :orientation "vertical"
+                :class class
+                :space-evenly false
+                :hexpand true
+                    (box :space-evenly false
+                        (label :limit-width 25
+                               :wrap true
+                               :text summary
+                               :class "notification-summary"
+                               :halign "start"
+                               :hexpand true
+                        )
+                    )
+                    (label :limit-width 60
+                           :wrap true
+                           :text body
+                           :halign "start"
+                           :class "notification-body"
+                    )
+                )
+            )
+        )
+    )
+)
+
+(defwidget mails []
+    (box :class "news" :spacing 20 :height 70
+        (eventbox :onclick "evolution &"
+            (box :class "gmail"
+                " "
+                (button :class "mail-count" :onclick "~/.config/eww/scripts/mail update &" gmail)
+            )
+        )
+        (eventbox :onclick "evolution &"
+            (box :class "navermail"
+                "N"
+                (button :class "mail-count" :onclick "~/.config/eww/scripts/mail update &" navermail)
+            )
+        )
+    )
+)
+
+(defwindow notification
+    :monitor 0
+    :windowtype "dock"
+    :geometry (geometry :x 0
+                        :y "53px"
+                        :width "400px"
+                        :height "1027px" ; 1080 - 53
+                        :anchor "top right")
+    :wm-ignore true
+    :stacking "fg"
+    (box :orientation "v" :class "bar-container" :space-evenly false :spacing 30
+        (notification)
+        (actions)
+        (mails)
+    )
+)

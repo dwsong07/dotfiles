@@ -1,0 +1,17 @@
+* {
+    all: unset;
+}
+
+$font: "Fira Sans", "UbuntuMono Nerd Font", "Noto Sans CJK KR";
+$bg: #1a1b26;
+$bg-alt: #1f2333;
+$bg-alt2: #2f354d;
+$fg: #cacaca;
+
+$blue: #5099d6;
+$gray: #868e96;
+$red: #f03e3e;
+
+@import "./lib/lib.scss";
+@import "./sidebar/sidebar.scss";
+@import "./notification/notification.scss";

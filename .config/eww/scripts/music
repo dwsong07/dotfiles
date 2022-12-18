@@ -1,0 +1,40 @@
+#!/bin/bash
+
+STATUS=$(playerctl status 2>/dev/null)
+TITLE=""
+ARTIST=""
+ALBUM=""
+IMAGE=""
+ICON="契"
+
+if [[ $STATUS == "" ]]; then
+    TITLE="No players found"
+else
+    TITLE=$(playerctl metadata title 2>/dev/null)
+    ARTIST=$(playerctl metadata artist 2>/dev/null)
+    ALBUM=$(playerctl metadata album 2>/dev/null)
+    IMAGE=$(playerctl metadata mpris:artUrl 2>/dev/null)
+    [[ $STATUS == "Playing" ]] && ICON=""
+fi
+
+
+case $1 in
+    "status")
+        echo $STATUS
+        ;;
+    "title")
+        echo $TITLE
+        ;;
+    "artist")
+        echo $ARTIST
+        ;;
+    "album")
+        echo $ALBUM
+        ;;
+    "image")
+        echo $IMAGE
+        ;;
+    "icon")
+        echo $ICON
+        ;;
+esac

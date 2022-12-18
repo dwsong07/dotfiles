@@ -1,0 +1,16 @@
+@mixin custom_button($color) {
+    background-color: $color;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 1.1rem;
+    @include hover_button($color);
+}
+
+@mixin hover_button($color) {
+    transition-duration: 0.2s;
+    transition-property: background-color;
+
+    &:hover {
+        background-color: rgba($color, 0.7);
+    }
+}

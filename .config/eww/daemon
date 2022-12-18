@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while :
+do
+    ~/.config/eww/scripts/weather update
+    ~/.config/eww/scripts/mail update
+    sleep 900
+done

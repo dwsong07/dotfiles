@@ -1,0 +1,110 @@
+.sidebar {
+    background-color: $bg;
+    color: $fg;
+    border-radius: 30px;
+
+    font-family: $font;
+    font-size: 1.25rem;
+}
+
+.sidebar-container {
+    padding: 30px;
+}
+
+.time {
+    font-size: 5rem;
+}
+
+.weather {
+    font-size: 1.5rem;
+    color: #b6bfe3;
+}
+
+.weather-icon {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.weather-refresh {
+    margin-left: 20px;
+    font-size: 1rem;
+}
+
+.cal-container {
+    background-color: $bg-alt;
+    padding: 3px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+
+    .cal {
+        padding: 0.8rem;
+
+        &:selected {
+            color: $blue;
+        }
+
+        &:indeterminate {
+            color: $gray;
+        }
+
+        &.highlight {
+            color: $blue;
+        }
+    }
+}
+
+.music {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 20px;
+}
+
+.music-container {
+    background: linear-gradient(to right, rgba(15, 15, 15, 0.9), rgba(15, 15, 15, 0.3));
+}
+
+.music-info {
+    padding: 30px;
+}
+
+.music-title {
+    font-weight: bold;
+}
+
+.music-details {
+    font-size: 0.85em;
+}
+
+.music-ctr {
+    padding: 20px;
+    font-size: 1.25em;
+}
+
+.timer {
+    background-color: $bg-alt;
+}
+
+.timer-disable {
+    color: $gray;
+}
+
+.timer-timebox {
+    margin: 10px;
+    font-family: "Fira Mono";
+    font-size: 1.6rem;
+
+    button {
+        font-size: 1.2rem;
+    }
+}
+
+.timer-actions {
+    button {
+        @include custom_button($bg-alt2);
+        margin: 12px;
+        padding: 3px;
+        padding-right: 7px;
+        font-size: 1.25rem;
+    }
+}

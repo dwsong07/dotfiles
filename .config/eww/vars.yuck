@@ -1,0 +1,31 @@
+(defpoll time :interval "1m" "date +'%H : %M'")
+(defpoll year :interval "1m" "date +%Y")
+(defpoll month :interval "1m" "date +%B")
+(defpoll date :interval "1m" :initial "1" "date +%d")
+(defpoll day :interval "1m" "date +%a")
+
+(defvar weatherdesc "")
+(defvar weathertemp "")
+(defvar weathericon "")
+
+(defpoll songtitle :interval "5s" "~/.config/eww/scripts/music title")
+(defpoll songartist :interval "5s" "~/.config/eww/scripts/music artist")
+(defpoll songalbum :interval "5s" "~/.config/eww/scripts/music album")
+(defpoll songimage :interval "5s" "~/.config/eww/scripts/music image")
+(defpoll songicon :interval "1s" "~/.config/eww/scripts/music icon")
+
+(defvar timerhour "00")
+(defvar timerminute "00")
+(defvar timersecond "00")
+(defvar timercounting false)
+
+(deflisten notificationslog "~/.config/eww/scripts/logger subscribe")
+(defpoll notificationdnd :initial false :interval "1s" "dunstctl is-paused")
+
+; if your interface is wlan0, replace wlp3s0 with wlan0
+(defpoll wifiactive :interval "1s" "LC_ALL=C nmcli | grep wlp3s0 | awk 'FNR == 1 {print $2}'")
+(defpoll bluetoothactive :interval "1s" :initial 0 "LC_ALL=C bluetoothctl show | grep 'Powered: yes' | wc -c")
+(defpoll nightmodeactive :interval "1s" "pgrep -x redshift &> /dev/null ; echo $?") ; 0: active, 1: inactive
+
+(defvar gmail 0)
+(defvar navermail 0)

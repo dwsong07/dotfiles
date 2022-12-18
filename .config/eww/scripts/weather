@@ -1,0 +1,36 @@
+#!/bin/bash
+
+source ~/.config/env
+
+DIR=~/.cache/eww/weather
+
+mkdir -p $DIR
+
+case $1 in
+    "update")
+        eww update weatherdesc="..."
+        eww update weathertemp="..."
+
+        WEATHER=$(curl -sf "https://api.openweathermap.org/data/2.5/weather?q=$CITY&appid=$OPENWEATHERMAP_KEY&units=metric")
+        ICON=$(echo $WEATHER | jq -r ".weather[0].icon")
+        
+        echo $WEATHER | jq '.main.temp' | cut -d "." -f 1 > $DIR/temp
+        echo ${ICON:0:2} > $DIR/icon
+        echo $WEATHER | jq -r ".weather[0].main" > $DIR/desc
+        eww update weatherdesc=$(~/.config/eww/scripts/weather desc)
+        eww update weathertemp=$(~/.config/eww/scripts/weather temp)
+        eww update weathericon=$(~/.config/eww/scripts/weather icon)
+        ;;
+    "temp")
+        cat $DIR/temp
+        ;;
+    "icon")
+        cat $DIR/icon
+        ;;
+    "desc")
+        cat $DIR/desc
+        ;;
+    "city")
+        echo $CITY
+        ;;
+esac

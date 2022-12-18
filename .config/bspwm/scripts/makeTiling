@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CURRENT_WINDOWS=$(bspc query -N -d focused)
+CURRENT_DESKTOP_ID=$(bspc query -D -d focused)
+
+if [ -f "$HOME/.cache/bspwm/$CURRENT_DESKTOP_ID" ]; then
+    pkill -P $(cat ~/.cache/bspwm/$CURRENT_DESKTOP_ID)
+    rm ~/.cache/bspwm/$CURRENT_DESKTOP_ID
+fi
+
+for node_id in $CURRENT_WINDOWS; do
+	bspc node $node_id -t tiled
+done
+

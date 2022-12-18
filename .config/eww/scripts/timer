@@ -1,0 +1,73 @@
+#!/bin/bash
+
+mkdir -p ~/.cache/eww/timer
+
+DIR=~/.cache/eww/timer
+
+[ -f "$DIR/hour" ] || echo 0 > $DIR/hour
+HOUR=$(cat $DIR/hour 2>/dev/null)
+
+[ -f "$DIR/minute" ] || echo 0 > $DIR/minute
+MINUTE=$(cat $DIR/minute 2>/dev/null)
+
+[ -f "$DIR/second" ] || echo 0 > $DIR/second
+SECOND=$(cat $DIR/second 2>/dev/null)
+
+function setTime {
+    echo $1 > $DIR/$2
+    eww update "timer$2=$(printf '%02d' $1)"
+}
+
+case $1 in
+    "hour-up")
+        setTime $(( HOUR + 1 )) hour
+        ;;
+    "hour-down")
+        if [[ $HOUR != 0 ]]; then
+            setTime $(( HOUR - 1 )) hour
+        fi
+        ;;
+    "hour")
+        cat $DIR/hour
+        ;;
+    "minute-up")
+        if [[ $MINUTE != 59 ]]; then
+            setTime $(( MINUTE + 1 )) minute
+        fi
+        ;;
+    "minute-down")
+        if [[ $MINUTE != 0 ]]; then
+            setTime $(( MINUTE - 1 )) minute
+        fi
+        ;;
+    "minute")
+        cat $DIR/minute
+        ;;
+    "second-up")
+        if [[ $SECOND != 59 ]]; then
+            setTime $(( SECOND + 1 )) second
+        fi
+        ;;
+    "second-down")
+        if [[ $SECOND != 0 ]]; then
+            setTime $(( SECOND - 1 )) second
+        fi
+        ;;
+    "second")
+        cat $DIR/second
+        ;;
+    "reset")
+        setTime 0 hour
+        setTime 0 minute
+        setTime 0 second
+        ;;
+    "start")
+        TOTAL_SECONDS=$(( HOUR * 3600 + MINUTE * 60 + SECOND ))
+        ~/.config/eww/scripts/countdown $TOTAL_SECONDS &
+        echo $! > $DIR/countdown_pid
+        ;;
+    "pause")
+        kill -SIGTERM $(cat $DIR/countdown_pid)
+        rm $DIR/countdown_pid
+        eww update timercounting=false
+esac

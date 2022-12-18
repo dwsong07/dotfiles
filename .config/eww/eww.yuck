@@ -1,0 +1,12 @@
+(include "./vars.yuck")
+(include "./sidebar/sidebar.yuck")
+(include "./notification/notification.yuck")
+
+(defwindow background-closer
+    :monitor 0
+    :geometry (geometry :width "100%" :height "100%")
+    :stacking "fg"
+    :windowtype "normal" ; for picom shadow
+    :wm-ignore true
+    (eventbox :onclick "eww close-all")
+)

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+DIR=~/.cache/eww/mail
+
+mkdir -p $DIR
+
+case $1 in
+    "update")
+        eww update gmail=".."
+        eww update navermail=".."
+
+        ~/.config/eww/scripts/mail.py gmail > $DIR/gmail
+        ~/.config/eww/scripts/mail.py navermail > $DIR/navermail
+
+        eww update gmail=$(cat $DIR/gmail)
+        eww update navermail=$(cat $DIR/navermail)
+        ;;
+    "gmail")
+        cat $DIR/gmail
+        ;;
+    "navermail")
+        cat $DIR/navermail
+        ;;
+esac
