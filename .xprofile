@@ -3,3 +3,5 @@
 export GTK_IM_MODULE=kime
 export QT_IM_MODULE=kime
 export XMODIFIERS=@im=kime
+
+export _JAVA_AWT_WM_NONREPARENTING=1

@@ -104,3 +104,6 @@ eval "$(starship init zsh)"
 
 ZSH_AUTOSUGGEST_STRATEGY=(completion)
 source /usr/share/nvm/init-nvm.sh
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools

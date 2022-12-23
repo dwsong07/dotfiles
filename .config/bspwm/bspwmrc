@@ -32,6 +32,7 @@ bspc rule -a Screenkey manage=off
 bspc rule -a "MEGAsync" state=floating follow=on
 bspc rule -a "kakaotalk.exe" state=floating
 
+bspc config external_rules_command ~/.config/bspwm/scripts/androidExternRule
 
 killall polybar; ~/.config/polybar/launch.sh &
 killall tint2; tint2 & # for tray
